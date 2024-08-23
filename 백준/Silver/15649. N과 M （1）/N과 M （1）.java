@@ -1,43 +1,44 @@
-import java.util.Arrays;
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
 public class Main {
-    static int N, M;
-    static int[] nums;
+
     static boolean[] visited;
+    static int[] ans;
+    static StringBuilder sb = new StringBuilder();
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        N = sc.nextInt();
-        M = sc.nextInt();
+        int N = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());
 
-        nums = new int[M];
-        visited = new boolean[N+1]; // 0부터 N까지의 배열
-
-        dp(0);
+        visited = new boolean[N];
+        ans = new int[M];
+        DFS(N,M,0);
+        System.out.println(sb);
     }
 
-    static void dp(int idx){
-        if(idx==M){
-            for(int i=0; i<M; i++){
-                System.out.print(nums[i]+" ");
+    static void DFS(int N, int M, int depth) {
+        // depth와 M이 같으면 return
+        if(depth == M){
+            for(int i : ans){
+                sb.append(i).append(' ');
             }
-            System.out.println();
+            sb.append("\n");
             return;
         }
 
-        for(int i=1; i<=N; i++){
+        for(int i=0; i<N; i++){
             if(!visited[i]){
-                nums[idx] = i;
                 visited[i] = true;
-                dp(idx+1);
+                ans[depth] = i+1;
+                DFS(N, M, depth+1);
                 visited[i] = false;
             }
         }
-
-
-
-    }//dp
-
+    }
 }
