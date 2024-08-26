@@ -1,65 +1,49 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Arrays;
-import java.util.Scanner;
+import java.util.StringTokenizer;
 
 public class Main {
-	
-	static int N;
-	static int M;
-	static int[] arr; // 입력으로 받은 수 배열 
-	static int[] nums;
-	static boolean[] visit;
-	
-	static StringBuilder sb = new StringBuilder();
-	
-	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
-		
-		N = sc.nextInt();
-		M = sc.nextInt();
-		
-		nums = new int[M]; // 출력할 배열, 크기는 M
-		visit = new boolean[N+1]; // 자연수 사용 여부를 체크할 배열
-		
-		arr = new int[N+1];
-		for(int i=1; i<=N; i++) {
-			arr[i] = sc.nextInt();
-		}
-		Arrays.sort(arr);
-		
-		sequance(0, 1);
-		
-		System.out.println(sb);
-		
-		
-	}//main
-	
-	public static void sequance(int idx, int start) {
-		// 기저파트
-		if(idx==M) {
-			for(int i=0; i<M; i++) {
-				sb.append(nums[i] + " ");
-			}
-			sb.append("\n");
-			return;
-		}
-		
-		// 재귀파트
-		// i : 자연수 사용여부 배열을 돎
-		// idx : 출력할 배열의 index
-		for(int i=start; i <= N; i++) {
-			if(!visit[i]) {
-				nums[idx] = arr[i]; // idx번째 배열에 i를 저장 
-				
-//				visit[i] = true; // 방문했음을 표시 
-				sequance(idx+1, i); // 다음 배열로 넘어감
-				
-//				visit[i] = false; // 방문하고 돌아오면 다시 초기화
-			}
-		}
-		
-		
-		
-	}// sequance
-	
-	
+    static int N,M;
+    static int[] num, ans;
+    static StringBuilder sb = new StringBuilder();
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+
+        num = new int[N];
+        ans = new int[M];
+
+        st = new StringTokenizer(br.readLine());
+        for(int i=0; i<N; i++){
+            num[i] = Integer.parseInt(st.nextToken());
+        }
+        Arrays.sort(num);
+
+        DFS(0,0);
+        System.out.print(sb);
+    }
+
+    public static void DFS(int depth, int start){
+        if(depth == M){
+            for(int x : ans){
+                sb.append(x).append(" ");
+            }
+            sb.append("\n");
+            return;
+        }
+
+        for(int i=start; i<N; i++){
+            ans[depth] = num[i];
+            DFS(depth+1, i);
+        }
+    }
+
+
+
 }
