@@ -5,23 +5,17 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        int R = sc.nextInt();
-        int C = sc.nextInt();
 
-        int[][] map = new int[R][C];
-        int[][] visit = new int[R][C];
-
-        Queue<int[]> fire = new LinkedList<>();
-        Queue<int[]> jihoon = new LinkedList<>();
-
-        int[] dr = {0,0,1,-1};
-        int[] dc = {1,-1,0,0};
+        int R=sc.nextInt(), C=sc.nextInt(), sec=0;
+        int[][] map = new int[R][C], visit = new int[R][C];
+        Queue<int[]> fire = new LinkedList<>(), jihoon = new LinkedList<>();
+        int[] dr = {0,0,1,-1}, dc = {1,-1,0,0};
+        boolean pos = true;
 
         for(int i=0; i<R; i++){
             String str = sc.next();
             for(int j=0; j<C; j++){
                 map[i][j] = str.charAt(j);
-
                 if(map[i][j]=='J'){
                     map[i][j] = '.';
                     visit[i][j] = 1;
@@ -31,8 +25,6 @@ public class Main {
             }
         }
 
-        boolean pos = true;
-        int sec = 0;
         loopOut :
         while (true){
             sec++;
@@ -64,14 +56,14 @@ public class Main {
             for(int i=0; i<jiSize; i++){
                 int[] j = jihoon.poll();
 
-                // 탈출한 경우
-                if(j[0]==0 || j[0]==R-1 || j[1]==0 || j[1]==C-1) break loopOut;
-
                 for(int d=0; d<4; d++){
                     int nr = j[0] + dr[d];
                     int nc = j[1] + dc[d];
 
-                    if(nr>=0 && nr<R && nc>=0 && nc<C && visit[nr][nc]==0 && map[nr][nc]=='.'){
+                    // 탈출한 경우(경계에 도달한 경우)
+                    if(nr<0 || nr>=R || nc<0 || nc>=C) break loopOut;
+
+                    if(visit[nr][nc]==0 && map[nr][nc]=='.'){
                         visit[nr][nc] = 1;
                         jihoon.add(new int[]{nr, nc});
                     }
