@@ -3,6 +3,7 @@ import java.util.Queue;
 import java.util.Scanner;
 
 public class Main {
+    // 깊은 복사 제거 버전
     static int N, M, ans=54321, emp=0, vLo;
     static int[][] map, virus;
     static int[] pick;
@@ -60,21 +61,14 @@ public class Main {
         int[] dc = {1,-1,0,0};
         int[][] visit = new int[N][N];
         Queue<int[]> q = new LinkedList<>();
-
-        // 깊은 복사
-        int[][] copy = new int[N][N];
-        for(int i=0; i<N; i++){
-            for(int j=0; j<N; j++){
-                copy[i][j] = map[i][j];
-            }
-        }
+        
 
         // 바이러스를 퍼뜨릴 자리를 3으로
         for(int i=0; i< pick.length; i++){
             int r = virus[pick[i]][0];
             int c = virus[pick[i]][1];
 
-            copy[r][c] = 3;
+            map[r][c] = 3;
             visit[r][c] = 1;
             q.add(new int[]{r,c}); // 큐에 바이러스 위치 넣기
         }
