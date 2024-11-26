@@ -32,20 +32,20 @@ public class Main {
 
     public static int find(int x){
         if(tree[x]<0) return x;
-        return find(tree[x]);
+        // 경로 압축 최적화
+        return tree[x] = find(tree[x]);
     }
 
     public static void uni(int u, int v){
         int a = find(u);
         int b = find(v);
-        if(a==b) return; // 두 원소가 같으면 넘어간다.
-        // union by rank : 높이가 더 높은 트리로 합친다.
-        if(tree[b]<tree[a]){
+        if(a==b) return;
+        // union by rank 최적화
+        if(tree[b] < tree[a]){
             int tmp = a;
             a = b;
             b = tmp;
         }
-        // 위의 if문으로 인해 (a의 높이 >= b의 높이)
         if(tree[a]==tree[b]) tree[a]--;
         tree[b] = a;
     }
