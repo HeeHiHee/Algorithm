@@ -1,53 +1,53 @@
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.StringTokenizer;
 
 public class Main {
-	static int[] arr;
+    static int N, M, tree[];
+    static StringBuilder sb = new StringBuilder();
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        N = Integer.parseInt(st.nextToken())+1;
+        M = Integer.parseInt(st.nextToken());
+        tree = new int[N];
+        Arrays.fill(tree, -1);
+        for(int i=0; i<M; i++){
+            st = new StringTokenizer(br.readLine());
+            int o = Integer.parseInt(st.nextToken());
+            int a = Integer.parseInt(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
+            if (o == 0) uni(a, b); // 합집합
+            else check(a, b); // 같은 집합인지 확인
+        }
+        System.out.println(sb);
+    }
+    public static void check(int u, int v){
+        int a = find(u);
+        int b = find(v);
+        sb.append(a==b?"yes":"no").append("\n");
+    }
 
-	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
-		
-		StringBuilder sb = new StringBuilder();
-		int N = sc.nextInt(); // 1부터 N까지
-		int M = sc.nextInt(); // 연산의 개수
+    public static int find(int x){
+        if(tree[x]<0) return x;
+        return find(tree[x]);
+    }
 
-		arr = new int[N + 1];
-		for (int i = 1; i < N + 1; i++) {
-			arr[i] = i;
-		}
-
-		for (int m = 0; m < M; m++) {
-			int cal = sc.nextInt();
-			int x = sc.nextInt();
-			int y = sc.nextInt();
-			// cal이 0이면 두 집합 합치기
-			if (cal == 0) {
-				union(x, y);
-			}
-			// 아니면 두 원소가 같은 집합에 포함되어 있는지 확인
-			else {
-				if (findset(x) == findset(y)) {
-					// 같은 집합에 있으면 1출력
-					sb.append("YES").append("\n");
-				} else {
-					sb.append("NO").append("\n");
-				}
-			}
-		} // 연산의 개수 m만큼 반복
-		System.out.println(sb);
-
-	}// main
-
-	static int findset(int x) {
-		// 패스 컴푸레숀
-		if (x != arr[x]) {
-			arr[x] = findset(arr[x]); // arr[x] -> x
-		}
-		return arr[x];
-
-	}// findset
-
-	static void union(int x, int y) {
-		arr[findset(y)] = findset(x);
-	}// union
+    public static void uni(int u, int v){
+        int a = find(u);
+        int b = find(v);
+        if(a==b) return; // 두 원소가 같으면 넘어간다.
+        // union by rank : 높이가 더 높은 트리로 합친다.
+        if(tree[b]<tree[a]){
+            int tmp = a;
+            a = b;
+            b = tmp;
+        }
+        // 위의 if문으로 인해 (a의 높이 >= b의 높이)
+        if(tree[a]==tree[b]) tree[a]--;
+        tree[b] = a;
+    }
 
 }
