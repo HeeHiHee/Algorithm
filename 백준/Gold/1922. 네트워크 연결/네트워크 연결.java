@@ -5,7 +5,7 @@ import java.util.*;
 
 public class Main {
     static int N, M, tree[];
-    static ArrayList<int[]> list = new ArrayList<>();
+    static PriorityQueue<int[]> q = new PriorityQueue<>((a,b)->(a[0]-b[0]));
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         N = Integer.parseInt(br.readLine());
@@ -18,14 +18,13 @@ public class Main {
             int u = Integer.parseInt(st.nextToken());
             int v = Integer.parseInt(st.nextToken());
             int c = Integer.parseInt(st.nextToken());
-            list.add(new int[]{c,u,v});
+            q.add(new int[]{c,u,v});
         }
-        Collections.sort(list, (a,b)->(a[0]-b[0])); // 비용 오름차순 정렬
         int ans = 0; // 출력할 최소비용
         int edge = 0; // 선택한 간선 수 : N-1개이면 반복문 종료
         // 간선 수만큼 반복
         for(int i=0; i<M; i++){
-            int[] current = list.get(i);
+            int[] current = q.poll();
             int curCost = current[0];
             int curU = current[1];
             int curV = current[2];
@@ -38,6 +37,7 @@ public class Main {
     }
 
     public static boolean check(int u, int v){
+        if(u==v) return false;
         int a = find(u);
         int b = find(v);
         if(a==b) return false; // 이미 같은 그룹일 때
