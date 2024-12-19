@@ -4,19 +4,18 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Main {
-    static int N, dp[][], max, next;
+    static int N, dp[], max, next;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         N = Integer.parseInt(br.readLine());
-        dp = new int[N][2];
+        dp = new int[N];
         StringTokenizer st = new StringTokenizer(br.readLine());
-        dp[0][1] = Integer.parseInt(st.nextToken());
-        max = dp[0][1];
+        dp[0] = Integer.parseInt(st.nextToken());
+        max = dp[0];
         for(int i=1; i<N; i++){
             next = Integer.parseInt(st.nextToken());
-            dp[i][0] = dp[i-1][1];
-            dp[i][1] = Math.max(next, next+dp[i-1][1]);
-            max = Math.max(max, dp[i][1]);
+            dp[i] = Math.max(next, next+dp[i-1]);
+            max = Math.max(max, dp[i]);
         }
         System.out.println(max);
     }
